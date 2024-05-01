@@ -8,7 +8,6 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
   const inputRef = useRef<HTMLInputElement>(null);
-  const textInputRef = useRef(null);
   
   const handleAdd = function() {
     if (formData.text.length === 0 && formData.title.length === 0) {
@@ -69,7 +68,6 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
             onChange={handleInputChange}
           />
           <input
-            ref={textInputRef}
             name="text"
             type="text"
             placeholder="Take a note..."
