@@ -1,0 +1,20 @@
+import './NoteList.scss'
+import Note from "../Note/Note"
+import NoteInterface from '../Note/NoteInterface';
+
+interface NoteListProps {
+    notes: NoteInterface[];
+    onDeleteNote: (note: NoteInterface) => void; 
+}
+
+function NoteList({ notes, onDeleteNote }: NoteListProps) {
+    return (
+        <div className="note-list">
+            {notes.map(note => {
+                return <Note key={note.id} note={note} onDeleteNote={onDeleteNote}/>
+            })}
+        </div>
+    )
+}
+
+export default NoteList;
