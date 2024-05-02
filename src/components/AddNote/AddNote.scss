@@ -2,13 +2,18 @@
     width: 500px;
     border-radius: 10px;
     border: 1px solid black;
-    overflow: hidden;
 }
 
-input {
+.inputs-container {
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.addNoteForm input[type='text'] {
     width: 100%;
     padding: 12px 16px;
     border: none;
+    background-color: inherit;
 }
 
 input:focus {
@@ -26,12 +31,12 @@ input:focus {
     gap: 10px;
 }
 
-.close-btn {
+.add-note-btn {
     background: none;
     border: none;
     font-size: 16px;
 }
 
-.close-btn:hover {
+.add-note-btn:hover {
     cursor: pointer;
 }

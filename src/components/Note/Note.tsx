@@ -9,7 +9,7 @@ interface NoteProps {
 
 function Note({ note, onDeleteNote, onEditNote }: NoteProps) {
     return (
-        <div className="note">
+        <div style={{ backgroundColor: note.color }} className="note">
             <span>{note.title}</span>
             <div className="note-footer">
                 <small>{note.text}</small>

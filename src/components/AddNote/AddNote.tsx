@@ -2,9 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { ChangeEvent } from 'react';
 import './AddNote.scss';
 import NoteInterface from '../Note/NoteInterface';
+import ColorPicker from '../ColorPicker/ColorPicker';
 
 const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => void }) => {
-  const initValue = {id: crypto.randomUUID(), title: '', text: ''};
+  const initValue = {id: crypto.randomUUID(), title: '', text: '', color: ''};
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +24,10 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
   const handleClose = function() {
     setIsExpanded(false);
     setFormData(initValue);
+  }
+
+  const handleColorChange = function(color: string) {
+    setFormData({...formData, color});
   }
 
 
@@ -56,41 +61,46 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
   };
 
   return (
-    <div className="addNoteForm" ref={inputRef}>
+    <div style={{ backgroundColor: formData.color }} className="addNoteForm" ref={inputRef}>
       {isExpanded ? (
         <>
-          <input
-            name="title"
-            className="title-input"
-            type="text"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleInputChange}
-          />
-          <input
-            name="text"
-            type="text"
-            placeholder="Take a note..."
-            value={formData.text}
-            onChange={handleInputChange}
-          />
+          <div className="inputs-container">
+            <input
+              name="title"
+              className="title-input"
+              type="text"
+              placeholder="Title"
+              value={formData.title}
+              onChange={handleInputChange}
+            />
+            <input
+              name="text"
+              type="text"
+              placeholder="Take a note..."
+              value={formData.text}
+              onChange={handleInputChange}
+            />
+          </div>
           <div className="btns-block">
-            <button type="button" className="close-btn" onClick={handleAdd}>
+            <ColorPicker changeColor={handleColorChange}/>
+            <button type="button" className="add-note-btn" onClick={handleAdd}>
               Add
             </button>
-            <button type="button" className="close-btn" onClick={handleClose}>
+            <button type="button" className="add-note-btn" onClick={handleClose}>
               Close
             </button>
           </div>
         </>
       ) : (
-        <input
-          type="text"
-          onClick={handleInputClick}
-          placeholder="Take a note..."
-          value=""
-          readOnly
-        />
+        <div className="inputs-container">
+          <input
+            type="text"
+            onClick={handleInputClick}
+            placeholder="Take a note..."
+            value=""
+            readOnly
+          />
+        </div>
       )}
     </div>
   );
