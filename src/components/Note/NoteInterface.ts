@@ -3,6 +3,7 @@ interface NoteInterface {
   title: string;
   text: string;
   color: string;
+  tags: string[];
 }
 
 export default NoteInterface;

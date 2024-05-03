@@ -1,22 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
-import { ChangeEvent } from 'react';
 import './AddNote.scss';
 import NoteInterface from '../Note/NoteInterface';
 import ColorPicker from '../ColorPicker/ColorPicker';
 
 const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => void }) => {
-  const initValue = {id: crypto.randomUUID(), title: '', text: '', color: ''};
+  const initValue = {id: crypto.randomUUID(), title: '', text: '', color: '', tags: []};
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
   const inputRef = useRef<HTMLInputElement>(null);
   
   const handleAdd = function() {
     if (formData.text.length === 0 && formData.title.length === 0) {
-        setIsExpanded(false);
-        return;
+      setIsExpanded(false);
+      return;
     }
     if (formData.title.length === 0) formData.title = 'new note';
-    onAddNote(formData);
+    const tag_regex = /#[^\s#]+/g;
+    const found_tags = formData.text.match(tag_regex) || [];
+    onAddNote({...formData, tags: found_tags});
     setIsExpanded(false);
     setFormData(initValue);
   }
@@ -52,7 +53,7 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
     setIsExpanded(true);
   };
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -73,10 +74,9 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
               value={formData.title}
               onChange={handleInputChange}
             />
-            <input
+            <textarea
               name="text"
-              type="text"
-              placeholder="Take a note..."
+              placeholder="Take a note... (use # for tags)"
               value={formData.text}
               onChange={handleInputChange}
             />

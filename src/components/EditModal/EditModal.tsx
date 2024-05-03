@@ -32,9 +32,11 @@ function EditModal({ note, onCloseModal, onSaveNote, onChangeNote }: EditModalPr
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
+    const found_tags = (name === 'text') ? value.match(/#[^\s#]+/g) || []: note.tags;
     onChangeNote({
       ...note,
-      [name]: value
+      [name]: value,
+      tags: found_tags
     });
   };
 
