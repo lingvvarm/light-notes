@@ -1,15 +1,24 @@
-import { useState, useRef, useEffect } from 'react';
 import './AddNote.scss';
+import { useState, useRef, useEffect } from 'react';
 import NoteInterface from '../Note/NoteInterface';
 import ColorPicker from '../ColorPicker/ColorPicker';
+import CategoryPicker, { CategorySelect } from '../CategoryPicker/CategoryPicker';
+import { Category } from '../CategoryTree/CategoryTree';
 
-const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => void }) => {
-  const initValue = {id: crypto.randomUUID(), title: '', text: '', color: '', tags: []};
+
+interface ExpandableInputProps {
+  categories: Category[];
+  selectedCategory: Category | null;
+  onAddNote: (note: NoteInterface) => void;
+}
+
+function AddNote({ categories, selectedCategory, onAddNote }: ExpandableInputProps) {
+  const initValue = {id: crypto.randomUUID(), title: '', text: '', color: '', tags: [], categories: []};
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
   const inputRef = useRef<HTMLInputElement>(null);
-  
-  const handleAdd = function() {
+
+  const handleAdd = () => {
     if (formData.text.length === 0 && formData.title.length === 0) {
       setIsExpanded(false);
       return;
@@ -22,15 +31,30 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
     setFormData(initValue);
   }
 
-  const handleClose = function() {
+  const handleClose = () => {
     setIsExpanded(false);
     setFormData(initValue);
   }
 
-  const handleColorChange = function(color: string) {
+  const handleColorChange = (color: string) => {
     setFormData({...formData, color});
   }
 
+  const handleCategoryChange = (categories: CategorySelect[]) => {
+    setFormData({...formData, categories})
+  }
+
+  const handleInputClick = () => {
+    setIsExpanded(true);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
@@ -48,18 +72,6 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
       document.removeEventListener('mousedown', handleClickOutside);
     };
   });
-
-  const handleInputClick = () => {
-    setIsExpanded(true);
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   return (
     <div style={{ backgroundColor: formData.color }} className="addNoteForm" ref={inputRef}>
@@ -82,6 +94,7 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
             />
           </div>
           <div className="btns-block">
+            <CategoryPicker categories={categories} currentCategories={(selectedCategory !== null) ? [selectedCategory]: null} onChangeSelect={handleCategoryChange}/>
             <ColorPicker changeColor={handleColorChange}/>
             <button type="button" className="add-note-btn" onClick={handleAdd}>
               Add
@@ -104,6 +117,6 @@ const ExpandableInput = ({ onAddNote }: { onAddNote: (note: NoteInterface) => vo
       )}
     </div>
   );
-};
+}
 
-export default ExpandableInput;
+export default AddNote;

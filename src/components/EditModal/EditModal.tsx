@@ -1,18 +1,21 @@
 import './EditModal.scss';
 import NoteInterface from '../Note/NoteInterface';
-import { ChangeEvent, useRef } from 'react';
-import { useEffect } from 'react';
+import { ChangeEvent } from 'react';
+import { useEffect, useRef } from 'react';
 import ColorPicker from '../ColorPicker/ColorPicker';
+import CategoryPicker, { CategorySelect } from '../CategoryPicker/CategoryPicker';
+import { Category } from '../CategoryTree/CategoryTree';
 
 interface EditModalProps {
     note: NoteInterface;
     onCloseModal: () => void;
     onSaveNote: () => void;
     onChangeNote: (note: NoteInterface) => void;
+    categories: Category[]
 }
 
 
-function EditModal({ note, onCloseModal, onSaveNote, onChangeNote }: EditModalProps) {
+function EditModal({ note, onCloseModal, onSaveNote, onChangeNote, categories }: EditModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +46,11 @@ function EditModal({ note, onCloseModal, onSaveNote, onChangeNote }: EditModalPr
     const handleColorEdit = function(colorHex: string) {
       onChangeNote({ ...note, color: colorHex });
     };
+
+    const handleCategoryEdit = function(categories: CategorySelect[]) {
+      onChangeNote({...note, categories});
+    }
+
  
 
   const handleSave = () => {
@@ -65,6 +73,7 @@ function EditModal({ note, onCloseModal, onSaveNote, onChangeNote }: EditModalPr
           onChange={handleInputChange}
         />
         <div className="edit-btns">
+          <CategoryPicker categories={categories} currentCategories={note.categories} onChangeSelect={handleCategoryEdit}/>
           <ColorPicker changeColor={handleColorEdit}/>
           <button type="button" onClick={handleSave}>Save</button>
           <button type="button" onClick={onCloseModal}>Cancel</button>

@@ -1,0 +1,8 @@
+.category-item {
+    border: 1px solid red;
+    all: revert;
+}
+
+.selected-category > span {
+    color: blue;
+}

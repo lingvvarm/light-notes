@@ -6,7 +6,6 @@ interface TagPickerProps {
     onSelectTag: (tag: string) => void
 }
 
-
 function TagPicker({ tags, selectedTags, onSelectTag }: TagPickerProps) {
     return (
         <ul>

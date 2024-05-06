@@ -9,7 +9,7 @@ interface NoteProps {
 
 function Note({ note, onDeleteNote, onEditNote }: NoteProps) {
     const text = note.text
-    const tag_regex = new RegExp("#[^s#]+");
+    const tag_regex = /#[^\s#]+/g;
 
     const highlighted_text = text.split(" ").map((word, index) => {
         if (word.match(tag_regex))
