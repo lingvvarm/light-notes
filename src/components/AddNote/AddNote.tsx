@@ -24,7 +24,7 @@ function AddNote({
     text: "",
     color: "",
     tags: [],
-    categories: selectedCategory ? [selectedCategory.value] : [],
+    categories: selectedCategory ? [selectedCategory] : [],
   };
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
