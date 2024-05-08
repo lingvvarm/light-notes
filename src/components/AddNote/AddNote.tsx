@@ -24,7 +24,7 @@ function AddNote({
     text: "",
     color: "",
     tags: [],
-    categories: [],
+    categories: selectedCategory ? [selectedCategory.value] : [],
   };
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
@@ -39,6 +39,7 @@ function AddNote({
     if (formData.title.length === 0) formData.title = "new note";
     const tag_regex = /#[^\s#]+/g;
     const found_tags = formData.text.match(tag_regex) || [];
+    // @ts-expect-error correct types
     onAddNote({ ...formData, tags: found_tags });
     setIsExpanded(false);
     setFormData(initValue);
@@ -90,6 +91,7 @@ function AddNote({
   const handleFieldSwitch = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
+      // @ts-expect-error element exists
       if (textareaRef.current) textareaRef.current.focus();
     }
   };

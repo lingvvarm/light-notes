@@ -66,12 +66,34 @@ function App() {
     localStorage.setItem("categories", JSON.stringify(categories));
   }, [categories]);
 
+  function extractAllIds(categories: Category[]) {
+    const ids: string[] = [];
+
+    function traverse(node: Category) {
+      ids.push(node.value);
+      if (node.children && node.children.length > 0) {
+        node.children.forEach((child) => traverse(child));
+      }
+    }
+
+    categories.forEach((category) => traverse(category));
+
+    return ids;
+  }
+
+  useEffect(() => {
+    if (!extractAllIds(categories).includes(selectedCategory?.value)) {
+      setSelectedCategory(null);
+    }
+  }, [selectedCategory, categories]);
+
   const addNoteToList = (note: NoteInterface) => {
     setNotes([...notes, note]);
   };
 
   const deleteNote = (note: NoteInterface) => {
     const newNotes = notes.filter((element) => element.id !== note.id);
+    setSelectedTags([]);
     setNotes(newNotes);
   };
 
@@ -102,6 +124,23 @@ function App() {
     setSelectedCategory(category);
   };
 
+  const extractAllLabels = (categories: Category[]) => {
+    const labels: string[] = [];
+
+    function traverse(node: Category) {
+      labels.push(node.label);
+      if (node.children && node.children.length > 0) {
+        node.children.forEach((child) => traverse(child));
+      }
+    }
+
+    categories.forEach((category) => {
+      traverse(category);
+    });
+
+    return labels;
+  };
+
   const addCategory = (
     parent: Category | null,
     name: string | undefined
@@ -113,15 +152,17 @@ function App() {
       children: [],
     };
 
-    const categoryLabels = categories.map((category) => category.label);
+    const categoryLabels = extractAllLabels(categories);
     if (categoryLabels.includes(name)) {
       if (errorTextRef.current)
+        // @ts-expect-error element exists
         errorTextRef.current.textContent = "This category already exists";
       return;
     }
 
     if (parent) {
       parent.children.push(newCategory);
+      // @ts-expect-error element exists
       errorTextRef.current.textContent = "";
       setCategories([...categories]);
     } else {
@@ -129,6 +170,7 @@ function App() {
         (category) => category.label === "All"
       );
       categories[allCategoryIndex].children.push(newCategory);
+      // @ts-expect-error element exists
       errorTextRef.current.textContent = "";
       setCategories([...categories]);
     }
@@ -184,12 +226,6 @@ function App() {
     });
 
     setNotes(updatedNotes);
-
-    if (categoryToDelete.value === selectedCategory?.value) {
-      setSelectedCategory(
-        updatedCategories.length > 0 ? updatedCategories[0] : null
-      );
-    }
   };
 
   const extractCategoryIds = (note: NoteInterface): string[] => {

@@ -45,7 +45,6 @@ function CategoryPicker({
       if (currentCategories[0]?.value && currentCategories[0]?.label) {
         defaultOptions = currentCategories;
       } else {
-        console.log(currentCategories);
         defaultOptions = currentCategories?.map((category) => ({
           value: category.value,
           label: category.label,
