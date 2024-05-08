@@ -37,13 +37,13 @@ Here's what you need to be able to run Shopping cart app:
 ### 1. Clone the repository
 
 ```shell
-git clone https://github.com/lingvvarm/cv-app-odin
+git clone https://github.com/lingvvarm/light-notes
 ```
 
 ### 2. Change directory
 
 ```shell
-cd cv-app-odin
+cd light-notes
 ```
 
 ### 3. Install npm dependencies
