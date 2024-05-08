@@ -14,6 +14,8 @@ You can access this app online via link [here](https://lingvvarm-cv-app.netlify.
 - Filtering based on categories and tags
 
 ## Screenshots
+![light-notes-screenshot](https://github.com/lingvvarm/light-notes/assets/86117870/afb5be14-dc5b-4c8e-8c91-9b1c4516ffbb)
+
 
 ## Tech Stack
 
