@@ -18,6 +18,7 @@ function AddNote({
   selectedCategory,
   onAddNote,
 }: ExpandableInputProps) {
+  console.log(selectedCategory);
   const initValue = {
     id: crypto.randomUUID(),
     title: "",
@@ -31,6 +32,15 @@ function AddNote({
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef(null);
 
+  useEffect(() => {
+    if (selectedCategory) {
+      setFormData((prevData) => ({
+        ...prevData,
+        categories: [selectedCategory],
+      }));
+    }
+  }, [selectedCategory]);
+
   const handleAdd = () => {
     if (formData.text.length === 0 && formData.title.length === 0) {
       setIsExpanded(false);
@@ -39,7 +49,6 @@ function AddNote({
     if (formData.title.length === 0) formData.title = "new note";
     const tag_regex = /#[^\s#]+/g;
     const found_tags = formData.text.match(tag_regex) || [];
-    // @ts-expect-error correct types
     onAddNote({ ...formData, tags: found_tags });
     setIsExpanded(false);
     setFormData(initValue);

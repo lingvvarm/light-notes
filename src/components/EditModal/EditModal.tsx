@@ -68,6 +68,32 @@ function EditModal({
     onCloseModal();
   };
 
+  const findCategoriesByIds = (
+    categories: Category[],
+    ids: string[]
+  ): Category[] => {
+    const result: Category[] = [];
+
+    function searchCategories(node: Category) {
+      if (ids.includes(node.value)) {
+        result.push(node);
+      }
+
+      if (node.children && node.children.length > 0) {
+        node.children.forEach((child) => searchCategories(child));
+      }
+    }
+
+    categories.forEach((category) => searchCategories(category));
+
+    return result;
+  };
+
+  const noteCategoryIds = findCategoriesByIds(
+    categories,
+    note.categories.map((category) => category.value)
+  );
+
   return (
     <div className="modal-overlay">
       <div
@@ -91,7 +117,7 @@ function EditModal({
         <div className="edit-modal-btns">
           <CategoryPicker
             categories={categories}
-            currentCategories={note.categories}
+            currentCategories={noteCategoryIds}
             onChangeSelect={handleCategoryEdit}
           />
           <div className="edit-modal-right-btns">

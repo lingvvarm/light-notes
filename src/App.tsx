@@ -82,6 +82,7 @@ function App() {
   }
 
   useEffect(() => {
+    // @ts-expect-error safer option
     if (!extractAllIds(categories).includes(selectedCategory?.value)) {
       setSelectedCategory(null);
     }
