@@ -16,6 +16,11 @@
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     animation: fadeIn .3s;
+    width: 35%;
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 @keyframes fadeIn {
@@ -48,6 +53,7 @@
     overflow: auto;
     box-shadow: none;
     resize: none;
+    height: 140px;
 }
 
 .modal button {
@@ -65,4 +71,15 @@
 .edit-btns {
     display: flex;
     gap: 5px;
+}
+
+.edit-modal-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+}
+
+.edit-modal-right-btns {
+    display: flex;
 }

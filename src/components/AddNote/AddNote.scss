@@ -1,8 +1,14 @@
 .addNoteForm {
     width: 500px;
     border-radius: 10px;
-    border: 1px solid black;
+    border: thin hsla(0, 0%, 83.9%, .8) solid;
+
+    @media screen and (max-width: 520px) {
+        width: max(300px, 100%);
+    }
 }
+
+
 
 .inputs-container {
     overflow: hidden;
@@ -30,9 +36,16 @@ input:focus, textarea:focus {
 
 .btns-block {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 7px 12px;
     gap: 10px;
+    align-items: center;
+}
+
+.add-note-right-btns {
+    display: flex;
+    gap: 10px; 
+    align-items: center;   
 }
 
 .add-note-btn {

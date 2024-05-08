@@ -1,8 +1,14 @@
-.category-item {
-    border: 1px solid red;
-    all: revert;
+.category-edit-input {
+    background: none;
+    border: none;
+    border-bottom: 2px solid black;
 }
 
-.selected-category > span {
-    color: blue;
+.tree-node {
+    display: flex;
+    gap: 10px;
+}
+
+.tree-node-btn {
+    background: none;
 }

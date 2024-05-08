@@ -1,10 +1,11 @@
-import './AddNote.scss';
-import { useState, useRef, useEffect } from 'react';
-import NoteInterface from '../Note/NoteInterface';
-import ColorPicker from '../ColorPicker/ColorPicker';
-import CategoryPicker, { CategorySelect } from '../CategoryPicker/CategoryPicker';
-import { Category } from '../CategoryTree/CategoryTree';
-
+import "./AddNote.scss";
+import { useState, useRef, useEffect } from "react";
+import NoteInterface from "../Note/NoteInterface";
+import ColorPicker from "../ColorPicker/ColorPicker";
+import CategoryPicker, {
+  CategorySelect,
+} from "../CategoryPicker/CategoryPicker";
+import { Category } from "../CategoryTree/CategoryTree";
 
 interface ExpandableInputProps {
   categories: Category[];
@@ -12,42 +13,56 @@ interface ExpandableInputProps {
   onAddNote: (note: NoteInterface) => void;
 }
 
-function AddNote({ categories, selectedCategory, onAddNote }: ExpandableInputProps) {
-  const initValue = {id: crypto.randomUUID(), title: '', text: '', color: '', tags: [], categories: []};
+function AddNote({
+  categories,
+  selectedCategory,
+  onAddNote,
+}: ExpandableInputProps) {
+  const initValue = {
+    id: crypto.randomUUID(),
+    title: "",
+    text: "",
+    color: "",
+    tags: [],
+    categories: [],
+  };
   const [isExpanded, setIsExpanded] = useState(false);
   const [formData, setFormData] = useState(initValue);
   const inputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef(null);
 
   const handleAdd = () => {
     if (formData.text.length === 0 && formData.title.length === 0) {
       setIsExpanded(false);
       return;
     }
-    if (formData.title.length === 0) formData.title = 'new note';
+    if (formData.title.length === 0) formData.title = "new note";
     const tag_regex = /#[^\s#]+/g;
     const found_tags = formData.text.match(tag_regex) || [];
-    onAddNote({...formData, tags: found_tags});
+    onAddNote({ ...formData, tags: found_tags });
     setIsExpanded(false);
     setFormData(initValue);
-  }
+  };
 
   const handleClose = () => {
     setIsExpanded(false);
     setFormData(initValue);
-  }
+  };
 
   const handleColorChange = (color: string) => {
-    setFormData({...formData, color});
-  }
+    setFormData({ ...formData, color });
+  };
 
   const handleCategoryChange = (categories: CategorySelect[]) => {
-    setFormData({...formData, categories})
-  }
+    // @ts-expect-error handled
+    setFormData({ ...formData, categories });
+  };
 
   const handleInputClick = () => {
     setIsExpanded(true);
   };
 
+  // @ts-expect-error heave appropriate event type
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -63,18 +78,28 @@ function AddNote({ categories, selectedCategory, onAddNote }: ExpandableInputPro
   };
 
   useEffect(() => {
-    
     if (isExpanded) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   });
 
+  const handleFieldSwitch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (textareaRef.current) textareaRef.current.focus();
+    }
+  };
+
   return (
-    <div style={{ backgroundColor: formData.color }} className="addNoteForm" ref={inputRef}>
+    <div
+      style={{ backgroundColor: formData.color }}
+      className="addNoteForm"
+      ref={inputRef}
+    >
       {isExpanded ? (
         <>
           <div className="inputs-container">
@@ -85,8 +110,10 @@ function AddNote({ categories, selectedCategory, onAddNote }: ExpandableInputPro
               placeholder="Title"
               value={formData.title}
               onChange={handleInputChange}
+              onKeyDown={handleFieldSwitch}
             />
             <textarea
+              ref={textareaRef}
               name="text"
               placeholder="Take a note... (use # for tags)"
               value={formData.text}
@@ -94,14 +121,30 @@ function AddNote({ categories, selectedCategory, onAddNote }: ExpandableInputPro
             />
           </div>
           <div className="btns-block">
-            <CategoryPicker categories={categories} currentCategories={(selectedCategory !== null) ? [selectedCategory]: null} onChangeSelect={handleCategoryChange}/>
-            <ColorPicker changeColor={handleColorChange}/>
-            <button type="button" className="add-note-btn" onClick={handleAdd}>
-              Add
-            </button>
-            <button type="button" className="add-note-btn" onClick={handleClose}>
-              Close
-            </button>
+            <CategoryPicker
+              categories={categories}
+              currentCategories={
+                selectedCategory !== null ? [selectedCategory] : null
+              }
+              onChangeSelect={handleCategoryChange}
+            />
+            <div className="add-note-right-btns">
+              <ColorPicker changeColor={handleColorChange} />
+              <button
+                type="button"
+                className="add-note-btn"
+                onClick={handleAdd}
+              >
+                Add
+              </button>
+              <button
+                type="button"
+                className="add-note-btn"
+                onClick={handleClose}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </>
       ) : (

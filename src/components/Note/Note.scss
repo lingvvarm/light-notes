@@ -1,7 +1,44 @@
 .note {
     margin-bottom: 10px;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 1rem;
-    min-height: 170px;
-    border: 1px solid black;
+    height: 190px;
+    border: thin solid hsla(0, 0%, 83.9%, .8);
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: auto;
+
+    &-title {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    &-content {
+        overflow: auto;
+    }
+}
+
+.note-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-top: 7px;
+}
+
+
+.note-btns {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+
+    button {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 8px;
+    }
 }

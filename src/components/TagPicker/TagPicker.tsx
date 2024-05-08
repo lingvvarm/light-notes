@@ -1,28 +1,33 @@
-import './TagPicker.scss'
+import "./TagPicker.scss";
 
+export interface TagCount {
+  tag: string;
+  count: number;
+}
 interface TagPickerProps {
-    tags: string[];
-    selectedTags: string[];
-    onSelectTag: (tag: string) => void
+  tags: TagCount[];
+  selectedTags: string[];
+  onSelectTag: (tag: string) => void;
 }
 
 function TagPicker({ tags, selectedTags, onSelectTag }: TagPickerProps) {
-    return (
-        <ul>
+  return (
+    <ul className="tag-list">
       {tags.map((tag, index) => {
-        const isSelected = selectedTags.includes(tag);
+        const isSelected = selectedTags.includes(tag.tag);
         return (
           <li
             key={index}
-            className={isSelected ? 'selected' : ''}
-            onClick={() => onSelectTag(tag)}
+            className={isSelected ? "selected" : ""}
+            onClick={() => onSelectTag(tag.tag)}
+            data-weight={`${tag.count}`}
           >
-            {tag}
+            {tag.tag}
           </li>
         );
       })}
     </ul>
-    )
+  );
 }
 
 export default TagPicker;
