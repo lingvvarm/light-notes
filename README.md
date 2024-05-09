@@ -1,4 +1,4 @@
-# Loght Notes
+# Light Notes
 
 Web app for taking and organizing notes. Built with React + TS + SASS.
 
