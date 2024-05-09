@@ -31,7 +31,7 @@ You can access this app online via link [here](https://lingvvarm-light-notes.net
 
 ### Prerequisites
 
-Here's what you need to be able to run Shopping cart app:
+Here's what you need to be able to run Light notes app:
 
 - Node.js (version >= 20)
 - NPM packet manager
